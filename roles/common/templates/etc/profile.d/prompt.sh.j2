@@ -1,0 +1,11 @@
+{% if common_root_bash_prompt is defined %}
+if [[ ${EUID} == 0 ]] ; then
+  export PS1='{{ common_root_bash_prompt }}'
+else
+  export PS1='{{ common_bash_prompt }}'
+fi
+{% elif system_bash_prompt is defined %}
+export PS1='{{ system_bash_prompt }}'
+{% else %}
+export PS1='{{ common_bash_prompt }}'
+{% endif %}

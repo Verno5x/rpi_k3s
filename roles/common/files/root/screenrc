@@ -1,0 +1,5 @@
+vbell on
+time
+startup_message off
+defscrollback 20000
+hardstatus alwayslastline "%{= KW} Screen(s): %-w%{= wk} %50>%n %t%{-}%+w%< %=%{KW}[%c %M %d %Y ]"

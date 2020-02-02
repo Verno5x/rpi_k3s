@@ -1,0 +1,42 @@
+---
+# Various types of MOTD support
+- name: Check for role-based MOTD template
+  local_action: stat path=motd/role.{{ role }}.j2
+  register: role_motd
+  when: role is defined
+
+- name: Add a role-based MOTD
+  template:
+    src: motd/role.{{ role }}.j2
+    dest: /etc/motd
+    owner: root
+    group: root
+    mode: 0444
+  when: role is defined and role_motd.stat.exists == True
+
+- name: Check for a group-based MOTD template
+  local_action: stat path=motd/group.{{ group_names[0] }}.j2
+  register: group_motd
+
+- name: Add a group-based MOTD
+  template:
+    src: motd/group.{{ group_names[0] }}.j2
+    dest: /etc/motd
+    owner: root
+    group: root
+    mode: 0444
+  when: group_motd is defined and group_motd.stat.exists == True
+
+- name: Check for a custom MOTD
+  local_action: stat path=motd/custom.{{ ansible_hostname }}.j2
+  register: custom_motd
+
+- name: Add a custom MOTD for our precious snowflakes
+  template:
+    src: motd/custom.{{ ansible_hostname }}.j2
+    dest: /etc/motd
+    owner: root
+    group: root
+    mode: 0444
+  when: custom_motd is defined and custom_motd.stat.exists == True
+

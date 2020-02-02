@@ -1,0 +1,21 @@
+;; turn on font-lock mode
+(when (fboundp 'global-font-lock-mode)
+  (global-font-lock-mode t))
+
+;; enable visual feedback on selections
+(setq transient-mark-mode t)
+
+;; create the autosave dir if necessary, since emacs won't.
+(make-directory "~/.emacs.d/autosaves/" t)
+
+;; Prevent ~ and # files from messying up the place
+;; Put autosave files (ie #foo#) and backup files (ie foo~) in ~/.emacs.d/.
+(custom-set-variables
+  '(auto-save-file-name-transforms '((".*" "~/.emacs.d/autosaves/\\1" t)))
+    '(backup-directory-alist '((".*" . "~/.emacs.d/backups/"))))
+
+;; Automatically open certain files in specific modes
+(add-to-list 'auto-mode-alist '("\\.service$" . conf-mode))
+(add-to-list 'auto-mode-alist '("\\.conf$" . conf-mode))
+(add-to-list 'auto-mode-alist '("\\.cfg$" . conf-mode))
+(add-to-list 'auto-mode-alist '("\\.cnf$" . conf-mode))

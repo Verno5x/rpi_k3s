@@ -1,0 +1,6 @@
+---
+- name: Add some useful packages
+  package:
+    name: "{{ item }}"
+    state: "{{ pkgversion | default('installed') }}"
+  with_items: "{{ common_packages }}"

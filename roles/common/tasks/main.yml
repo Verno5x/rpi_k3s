@@ -1,0 +1,62 @@
+---
+- name: Add common bash shell settings
+  template:
+    src: etc/profile.d/{{ item }}.j2
+    dest: /etc/profile.d/{{ item }}
+    owner: root
+    group: root
+    mode: 0444
+  with_items:
+    - common.sh
+    - prompt.sh
+  tags: update_shellenv
+
+- name: Ensure prelinking never runs
+  copy:
+    src: etc/sysconfig/prelink
+    dest: /etc/sysconfig/prelink
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Ensure root has /root/bin
+  file:
+    path: /root/bin
+    state: directory
+    owner: root
+    group: root
+    mode: 0700
+  tags: update_rootenv
+
+- name: Add some root shell configs to make life easier
+  copy:
+    src: root/{{ item }}
+    dest: /root/.{{ item }}
+    backup: yes
+    owner: root
+    group: root
+    mode: 0600
+  with_items:
+    - screenrc
+    - emacs
+  tags: update_rootenv
+
+- name: Add some useful packages
+  package:
+    name: "{{ item }}"
+    state: "{{ pkgversion | default('installed') }}"
+  with_items: "{{ common_packages }}"
+
+- import_tasks: ntp.yml
+  tags: common_ntp
+
+- import_tasks: motd.yml
+  tags: common_motd
+
+- name: Set default SSH log level to VERBOSE
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?LogLevel.*'
+    line: 'LogLevel VERBOSE'
+    state: present
+  notify: restart_sshd

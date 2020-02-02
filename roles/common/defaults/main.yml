@@ -1,0 +1,28 @@
+---
+# Packages that can be installed on both CentOS 6 and 7
+common_packages:
+  - bash-completion
+  - bind-utils
+  - checkpolicy
+  - dos2unix
+  - ethtool
+  - iftop
+  - libselinux-python
+  - lsof
+  - mailx
+  - nc
+  - ntpdate
+  - policycoreutils
+  - policycoreutils-python
+  - screen
+  - strace
+  - tcpdump
+  - telnet
+  - tree
+  - vim-enhanced
+
+# Default timezone
+time_zone: "America/New_York"
+
+# You know, for bash!
+common_bash_prompt: '\[\033[1;33m\][\[\033[0m\]\[\033[1;31m\]\u\[\033[0m\]\[\033[0;33m\]@\[\033[0m\]\[\033[1;36m\]\H\[\033[1;31m\]:\[\033[1;35m\]\w\[\033[1;33m\]]\n \$ \[\033[0m\]'

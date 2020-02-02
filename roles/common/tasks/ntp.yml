@@ -1,0 +1,35 @@
+---
+- name: C7 Register the current timezone setting
+  shell: "/usr/bin/timedatectl | grep -q America/New_York"
+  register: timezone_result
+  check_mode: no
+  changed_when: false
+
+- name: C7 Set the timezone
+  command: /usr/bin/timedatectl set-timezone America/New_York
+  when: timezone_result.rc != 0
+
+- name: C7 Enable NTP service
+  service:
+    name: chronyd
+    enabled: yes
+
+- name: C7 Register the current NTP setting
+  shell: "/usr/bin/timedatectl | grep -q 'NTP enabled: yes'"
+  register: ntp_result
+  check_mode: no
+  changed_when: false
+
+- name: C7 Tell the system to use NTP for time
+  command: /usr/bin/timedatectl set-ntp yes
+  when: ntp_result.rc != 0
+
+- name: C7 Add chrony configuration file
+  template:
+    src: etc/chrony.conf.j2
+    dest: /etc/chrony.conf
+    force: yes
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart_chronyd
