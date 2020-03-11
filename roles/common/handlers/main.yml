@@ -3,3 +3,8 @@
   service:
     name: sshd
     state: restarted
+
+- name: restart_chronyd
+  service:
+    name: chronyd
+    state: restarted

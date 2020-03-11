@@ -11,14 +11,6 @@
     - prompt.sh
   tags: update_shellenv
 
-- name: Ensure prelinking never runs
-  copy:
-    src: etc/sysconfig/prelink
-    dest: /etc/sysconfig/prelink
-    owner: root
-    group: root
-    mode: 0644
-
 - name: Ensure root has /root/bin
   file:
     path: /root/bin
@@ -44,14 +36,11 @@
 - name: Add some useful packages
   package:
     name: "{{ item }}"
-    state: "{{ pkgversion | default('installed') }}"
+    state: "{{ pkgversion | default('present') }}"
   with_items: "{{ common_packages }}"
 
 - import_tasks: ntp.yml
   tags: common_ntp
-
-- import_tasks: motd.yml
-  tags: common_motd
 
 - name: Set default SSH log level to VERBOSE
   lineinfile:

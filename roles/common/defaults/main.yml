@@ -2,24 +2,25 @@
 # Packages that can be installed on both CentOS 6 and 7
 common_packages:
   - bash-completion
-  - bind-utils
+  - bsd-mailx
   - checkpolicy
+  - chrony
+  - dnsutils
   - dos2unix
   - ethtool
   - iftop
-  - libselinux-python
   - lsof
-  - mailx
-  - nc
+  - netcat
   - ntpdate
   - policycoreutils
-  - policycoreutils-python
+  - policycoreutils-python-utils
+  - python-selinux
   - screen
   - strace
   - tcpdump
   - telnet
   - tree
-  - vim-enhanced
+  - vim
 
 # Default timezone
 time_zone: "America/New_York"

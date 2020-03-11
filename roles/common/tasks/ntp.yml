@@ -3,7 +3,8 @@
   shell: "/usr/bin/timedatectl | grep -q America/New_York"
   register: timezone_result
   check_mode: no
-  changed_when: false
+  changed_when: False
+  failed_when: False
 
 - name: C7 Set the timezone
   command: /usr/bin/timedatectl set-timezone America/New_York
@@ -18,7 +19,8 @@
   shell: "/usr/bin/timedatectl | grep -q 'NTP enabled: yes'"
   register: ntp_result
   check_mode: no
-  changed_when: false
+  changed_when: False
+  failed_when: False
 
 - name: C7 Tell the system to use NTP for time
   command: /usr/bin/timedatectl set-ntp yes
