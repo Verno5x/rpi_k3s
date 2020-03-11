@@ -1,0 +1,44 @@
+---
+- name: Copy K3s service file
+  register: k3s_service
+  template:
+    src: etc/systemd/system/k3s.service.j2
+    dest: /etc/systemd/system/k3s.service
+    owner: root
+    group: root
+    mode: 0755
+  notify: restart k3s
+
+- name: Flush the handlers to cycle k3s if necessary
+  meta: flush_handlers
+
+- name: Wait for node-token
+  wait_for:
+    path: /var/lib/rancher/k3s/server/node-token
+
+- name: Read node-token from master
+  slurp:
+    src: /var/lib/rancher/k3s/server/node-token
+  register: node_token
+
+- name: Store Master node-token
+  set_fact: 
+   token: "{{ node_token.content | b64decode | regex_replace('\n', '') }}"
+
+- name: Create directory .kube
+  file:
+    path: /home/{{ ansible_user }}/.kube
+    state: directory
+    owner: "{{ ansible_user }}"
+
+- name: Copy config file to user home directory
+  copy:
+    src: /etc/rancher/k3s/k3s.yaml
+    dest: /home/{{ ansible_user }}/.kube/config
+    remote_src: yes
+
+- name: Update the IP in the config
+  replace:
+    path: /home/{{ ansible_user }}/.kube/config
+    regexp: 'https://localhost:6443'
+    replace: 'https://{{ ansible_default_ipv4.address }}:6443'

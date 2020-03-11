@@ -1,7 +1,10 @@
 ---
 - hosts: rpi_cluster 
-  become: true
+  remote_user: pi
+  become: yes
 
   roles:
     - role: common
       tags: ['common']
+    - role: k3s
+      tags: ['k3s']

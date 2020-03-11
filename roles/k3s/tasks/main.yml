@@ -1,0 +1,16 @@
+---
+
+- name: Download the k3s binary
+  import_tasks: download.yml
+  when: k3s_download
+  tags: download
+
+- name: Setup the k3s master
+  import_tasks: master.yml
+  when: "'k3s_master' in group_names"
+  tags: master
+
+- name: Setup the k3s nodes
+  import_tasks: node.yml
+  when: "'k3s_node' in group_names"
+  tags: nodes

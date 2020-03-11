@@ -1,0 +1,4 @@
+---
+k3s_download: False
+
+k3s_master_host: "{{ groups.k3s_master[0] }}"
