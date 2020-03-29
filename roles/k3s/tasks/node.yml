@@ -12,7 +12,7 @@
 
 - name: Store Master node-token
   set_fact:
-    k3s_token: "{{ node_token.content | b64decode | regex_replace('\n', '') }}"            
+    k3s_token: "{{ node_token.content | b64decode | regex_replace('\n', '') }}"
 
 - name: Copy K3s service file
   template:
