@@ -1,0 +1,32 @@
+---
+- name: Create the metallb namespace
+  k8s:
+    name: metallb-system
+    api_version: v1
+    kind: Namespace
+    state: present
+
+- name: Create Pod Security Policy
+  k8s:
+    state: present
+    src: pod_security_policy.yml
+
+- name: Create Service Account
+  k8s:
+    state: present
+    src: service_account.yml
+
+- name: Create Role Based Access Control
+  k8s:
+    state: present
+    src: rbac.yml
+
+- name: Create Daemon Set
+  k8s:
+    state: present
+    src: daemon_set.yml
+
+- name: Create a deployment
+  k8s:
+    state: present
+    src: deployment.yml

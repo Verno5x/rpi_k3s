@@ -1,5 +1,5 @@
 ---
-- hosts: rpi_cluster 
+- hosts: rpi_cluster
   remote_user: pi
   become: yes
 
@@ -8,3 +8,7 @@
       tags: ['common']
     - role: k3s
       tags: ['k3s']
+      #    - role: k8s_metallb
+      #      delegate_to: localhost
+      #      run_once: True
+      #      tags: ['k8s_metallb']
